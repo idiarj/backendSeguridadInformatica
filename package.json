@@ -1,0 +1,31 @@
+{
+  "name": "backend-si",
+  "version": "1.0.0",
+  "description": "Backend para el proyecto general de la materia Seguridad Informatica.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "Seguridad",
+    "Informatica",
+    "Backend",
+    "Node",
+    "Express",
+    "Ayuda",
+    "Jubert"
+  ],
+  "author": "Idiar Chacin, Victoria Acosta, Jose Burgos",
+  "license": "ISC",
+  "dependencies": {
+    "basic-ftp": "^5.0.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ftp-srv": "^4.6.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
+  }
+}
