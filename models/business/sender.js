@@ -17,7 +17,7 @@ export class Sender{
         }
     }
 
-    static async getProjects({enterprise}){
+    static async getFiles({user}){
         try {
             
         } catch (error) {
