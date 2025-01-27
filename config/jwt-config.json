@@ -1,0 +1,6 @@
+{
+    "secret": "mi-clave-secreta-ulta-segura-jonkler",
+    "options": {
+        "expiresIn": "1d"
+    }
+}

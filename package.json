@@ -2,9 +2,11 @@
   "name": "backend-si",
   "version": "1.0.0",
   "description": "Backend para el proyecto general de la materia Seguridad Informatica.",
-  "main": "index.js",
+  "type": "module",
+  "main": "app.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "dev": "node --watch app/app.js "
   },
   "keywords": [
     "Seguridad",
