@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 export class FsUtils {
     static async readJsonFile(filePath) {
         try {
- 
+            console.log('Leyendo el archivo:', filePath);
             const data = await fs.readFile(filePath);
             return JSON.parse(data);
         } catch (error) {

@@ -17,4 +17,12 @@ export class AuthController {
             return res.status(500).json({error: error.message, errorMessage: 'Error al registrar usuario.'})
         }
     }
+
+    static async logout(req, res){
+        try {
+            
+        } catch (error) {
+            return res.status(500).json({error: error.message, errorMessage: 'Error al cerrar sesión.'})
+        }
+    }
 }
