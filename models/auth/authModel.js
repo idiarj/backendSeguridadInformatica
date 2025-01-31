@@ -1,12 +1,16 @@
 
-
+import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
 
 
 export class AuthModel {
 
-    static async login({user, email, passowrd}){
+    static async login({username, email, password}){
         try {
-            
+            console.log(username)
+            console.log(password)
+            const user = await appSeguridadInfDB.exeQuery({key: 'validateUser', params: [username]})
+            console.log(user)
+            return true
         } catch (error) {
             throw error;
         }
