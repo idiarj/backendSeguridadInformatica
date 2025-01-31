@@ -1,11 +1,11 @@
-import 
+import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
 
 export class Sender{
 
 
     static async sendPDF({pdf_file}){
         try {
-            
+            console.log(pdf_file);
         } catch (error) {
             throw error;
         }
@@ -13,15 +13,7 @@ export class Sender{
 
     static async sendDocx({docx_file}){
         try {
-            
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static async getFiles({user}){
-        try {
-            
+            console.log(docx_file);
         } catch (error) {
             throw error;
         }

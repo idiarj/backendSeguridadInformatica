@@ -1,0 +1,4 @@
+{
+    
+    "getApplicationAdmins": "SELECT file_name FROM test"
+}
