@@ -1,6 +1,16 @@
 import { promises as fs } from 'fs';
 
 export class FsUtils {
+
+    static async readFile(filePath) {
+        try {
+            console.log('Leyendo el archivo:', filePath);
+            return await fs.readFile(filePath);
+        }catch (error) {
+            console.log('Error al leer el archivo:', error);
+        }
+    }
+
     static async readJsonFile(filePath) {
         try {
             console.log('Leyendo el archivo:', filePath);
