@@ -1,8 +1,8 @@
 {
     
     "getApplicationAdmins": "SELECT file_name FROM test",
-    "validateUser": "SELECT username FROM user WHERE username = $1",
-    "validatePassword": "SELECT user_password FROM user WHERE user = $1",
+    "validateUser": "SELECT username FROM usuario WHERE username = $1",
+    "validatePassword": "SELECT user_password FROM usuario WHERE username = $1",
     "registerUser": "INSERT INTO user (username, email, user_password, id_enterprises, id_user_type) VALUES ($1, $2, $3, $4, $5)",
     "insertDocxApplication": "INSERT INTO application (application_name, binary_file, id_algorithm, id_state, file_type_id, id_user) VALUES ($1, $2, $3, 2, $4, $5)"
 }

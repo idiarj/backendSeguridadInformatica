@@ -64,7 +64,7 @@ export class PgHandler{
         } catch (error) {
 
             console.log(error)
-            return { error }
+            throw new Error(`Error al ejecutar la consulta, ${error.message}`)
 
         }finally{
             if(!isClientProvided){

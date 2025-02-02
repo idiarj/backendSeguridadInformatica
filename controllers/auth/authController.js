@@ -4,12 +4,13 @@ import { AuthModel } from "../../models/auth/authModel.js"
 export class AuthController {
     static async login(req, res){
         try {
+            console.log('----LOGIN CONTROLADOR----')
             const {username, password} = req.body
             console.log(req.body)
             // validar datos OK
-            const validLogin = AuthModel.login({username, password})
+            const validLogin = await AuthModel.login({username, password})
             if(!validLogin) return res.status(400).json({
-                mensaje: 'No se pudo iniciar sesion, credenciales erroneas.'
+                mensaje: 'No se pudo iniciar sesion, usuario o contraseña incorrectas.'
             })
             return res.status(200).json({message: 'Login exitoso.'});
         } catch (error) {
