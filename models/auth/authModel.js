@@ -16,9 +16,17 @@ export class AuthModel {
         }
     }
 
-    static async register({user, email, password, enterprise}){
+    static async register({user, email, password, enterprise, user_type}) {
         try {
-            
+            const userAlreadyExists = await this.validateUser({username: user, email})
+            if(userAlreadyExists) return {success: false, message: 'El usuario ya existe.'}
+            const key = 'registerUser'
+            const params = [user, email, password, enterprise, user_type]
+            await appSeguridadInfDB.exeQuery({
+                key,
+                params
+            })
+            return {success: true, message: 'Usuario registrado correctamente.'}
         } catch (error) {
             throw error;
         }
@@ -56,6 +64,7 @@ export class AuthModel {
             })
             return password === user_password
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }

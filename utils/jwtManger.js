@@ -15,5 +15,5 @@ class Token {
     return jwt.verify(token, process.env.SECRET_KEY);
   }
 }
-
+console.log('process.env.SECRET_KEY', process.env.SECRET_KEY)
 export const jwtToken = new Token(process.env.SECRET_KEY);

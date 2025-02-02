@@ -1,6 +1,15 @@
 
 ### Registrar un usuario
+POST http://localhost:3000/auth/register
+Content-Type: application/json
 
+{
+    "username": "Vicaag6",
+    "password": "messi2003",
+    "email": "rubialoca@gmail.com",
+    "enterprise": 1,
+    "user_type": 1
+}
 
 
 
