@@ -11,10 +11,10 @@ export class Sender{
         }
     }
 
-    static async sendTxt({file_name, txt_binary, id_user, id_algorithm, }){
+    static async sendTxt({file_name, txt_binary, description, id_user, id_algorithm, file_type}){
         try {
             const key = 'insertDocxApplication';
-            const params = [file_name, txt_binary, id_algorithm, 1, id_user];
+            const params = [file_name, txt_binary, description, id_algorithm, 1, file_type, id_user];
             const response = await appSeguridadInfDB.exeQuery({key, params});
             //console.log(response);
             return {success: true, response}

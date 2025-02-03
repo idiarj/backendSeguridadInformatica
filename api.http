@@ -21,3 +21,7 @@ Content-Type: application/json
     "username": "Idiarj",
     "password": "Foden2004"
 }
+
+
+#### Enviar licitacion
+POST http://localhost:3000/send/txt

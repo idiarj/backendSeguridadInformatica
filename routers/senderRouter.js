@@ -4,4 +4,4 @@ import { SenderController } from "../controllers/business/senderController.js";
 
 export const senderRouter = Router();
 
-senderRouter.post('/docx', SenderController.sendDocx);
+senderRouter.post('/txt', SenderController.sendTxt);

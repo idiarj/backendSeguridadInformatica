@@ -3,14 +3,14 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import multer from 'multer';
-import path from 'path';
+import { FsUtils } from '../utils/fsUtils.js';
 import { authRouter } from '../routers/authRouter.js';
 import { senderRouter } from '../routers/senderRouter.js';
 import { applicationRouter } from '../routers/applicationRouter.js';
-import cors_config from '../config/cors-config.json' assert { type: "json" };
+
+const cors_config = await FsUtils.readJsonFile('./config/cors-config.json');
 
 dotenv.config();
-
 const app = express();
 
 const storage = multer.diskStorage({
