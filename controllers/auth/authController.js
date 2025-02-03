@@ -1,6 +1,5 @@
 import { AuthModel } from "../../models/auth/authModel.js"
 import { userValidation } from "../../instances/security/validationInstances.js"
-import { CryptManager } from "../../utils/bcryptUtil.js"
 import { jwtToken } from "../../utils/jwtManger.js"
 export class AuthController {
     static async login(req, res){
@@ -8,20 +7,26 @@ export class AuthController {
             console.log('----LOGIN CONTROLADOR----')
             const {username, password} = req.body
             console.log('req.body', req.body)
-
+            if(req.cookies.access_token) {
+                console.log('Ya hay una sesion activa.')
+                res.clearCookie('access_token')
+                return res.status(400).json({message: 'Ya hay una sesion activa.'})
+            }
             const validData = await userValidation.validatePartial(req.body)
             if(!validData.success) return res.status(400).json({error: validData.error.issues[0].message})
             
             const validLogin = await AuthModel.login({username, password})
-            if(!validLogin) return res.status(400).json({
+            if(!(validLogin.success)) return res.status(400).json({
                 mensaje: 'No se pudo iniciar sesion, usuario o contraseña incorrectas.'
             })
-
-
+            const user = validLogin.user
+            console.log(user)
             const token = jwtToken.generateToken({payload: {username}, expiresIn: '1h'});
             res.cookie('access_token', token)
+            console.log('Login exitoso.')
             return res.status(200).json({message: 'Login exitoso.'});
         } catch (error) {
+            console.log(error)
             return res.status(500).json({error: error.message, errorMessage: 'Error al iniciar sesion.'})
         }
     }
@@ -32,11 +37,10 @@ export class AuthController {
 
             if(!validData.success) return res.status(400).json({error: validData.error.issues[0].message})
 
-            const {username, email, password, enterprise, user_type} = req.body
+            const {username, email, password} = req.body
 
-            const hashedPassword = await CryptManager.encriptarData({data: password})
 
-            const register = await AuthModel.register({user: username, email, password: hashedPassword, enterprise, user_type})
+            const register = await AuthModel.register({user: username, email, password})
             console.log('register', register)
             if(!register.success) return res.status(400).json({message: register.message})
 
@@ -50,7 +54,10 @@ export class AuthController {
 
     static async logout(req, res){
         try {
-            
+            const token = req.cookies.access_token
+            if(!token) return res.status(400).json({message: 'No hay token de acceso.'})
+            res.clearCookie('access_token')
+            return res.status(200).json({message: 'Sesión cerrada.'})
         } catch (error) {
             return res.status(500).json({error: error.message, errorMessage: 'Error al cerrar sesión.'})
         }

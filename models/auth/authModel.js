@@ -1,17 +1,20 @@
 
 import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
-
+import { CryptManager } from "../../utils/bcryptUtil.js";
 
 export class AuthModel {
 
     static async login({username, email, password}){
         try {
             console.log('----LOGIN MODELO----')
-            const usernameValidation = await this.validateUser({username, email})
+            const user = await this.validateUser({username, email})
+            console.log('user', user)
             const passwordValidation = await this.validatePassword({username, password})
-            if(usernameValidation && passwordValidation) return true
+            console.log('passwordValidation', passwordValidation)
+            if((user.length > 0) && passwordValidation) return {success: true, user }
             return false
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }
@@ -19,9 +22,10 @@ export class AuthModel {
     static async register({user, email, password, enterprise, user_type}) {
         try {
             const userAlreadyExists = await this.validateUser({username: user, email})
+            const hashedPassword = await CryptManager.encriptarData({data: password})
             if(userAlreadyExists) return {success: false, message: 'El usuario ya existe.'}
             const key = 'registerUser'
-            const params = [user, email, password, enterprise, user_type]
+            const params = [user, email, hashedPassword]
             await appSeguridadInfDB.exeQuery({
                 key,
                 params
@@ -48,8 +52,10 @@ export class AuthModel {
                 key,
                 params
             })
-            return user.length > 0
+            console.log('user2', user)
+            return user
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }
@@ -62,7 +68,10 @@ export class AuthModel {
                 key,
                 params
             })
-            return password === user_password
+            console.log('user_password', user_password)
+            console.log('password', password)
+            const validPassword = await CryptManager.compareData({toCompare: password, hashedData: user_password})
+            return validPassword
         } catch (error) {
             console.log(error)
             throw error;

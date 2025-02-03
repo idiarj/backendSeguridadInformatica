@@ -9,7 +9,7 @@ import { senderRouter } from '../routers/senderRouter.js';
 import { applicationRouter } from '../routers/applicationRouter.js';
 
 const cors_config = await FsUtils.readJsonFile('./config/cors-config.json');
-
+console.log(cors_config);
 dotenv.config();
 const app = express();
 
