@@ -19,9 +19,10 @@ export class AuthController {
             if(!(validLogin.success)) return res.status(400).json({
                 mensaje: 'No se pudo iniciar sesion, usuario o contraseña incorrectas.'
             })
-            const user = validLogin.user
+            console.log('sali del modelo')
+            const [user] = validLogin.user
             console.log(user)
-            const token = jwtToken.generateToken({payload: {username}, expiresIn: '1h'});
+            const token = jwtToken.generateToken({payload: {id_user: user.id_user, username: user.username, user_type: user.id_user_type}, expiresIn: '1h'});
             res.cookie('access_token', token)
             console.log('Login exitoso.')
             return res.status(200).json({message: 'Login exitoso.'});
@@ -50,10 +51,11 @@ export class AuthController {
             console.log(error)
             return res.status(500).json({error: error.message, errorMessage: 'Error al registrar usuario.'})
         }
-    }
+    } 
 
     static async logout(req, res){
         try {
+            console.log(req.cookies)
             const token = req.cookies.access_token
             if(!token) return res.status(400).json({message: 'No hay token de acceso.'})
             res.clearCookie('access_token')

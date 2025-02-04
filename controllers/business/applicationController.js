@@ -4,8 +4,11 @@ export class applicationController{
 
     static async ApplicationsGET(req, res){
         try {
-            const {user_type} = req.body
-            const applications = await Application.getApplications({user_type})
+            console.log('joli')
+            //console.log(req.user)
+            const {id_user} = req.user
+            const {applications} = await Application.getApplications({id_user})
+            console.log('as',applications)
             return res.status(200).json({success: true, applications})
         } catch (error) {
             res.status(401).json({error: error, errorMessage: 'Error al obtener las licitaciones.'})

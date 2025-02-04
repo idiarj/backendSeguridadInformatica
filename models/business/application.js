@@ -2,17 +2,14 @@ import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
 
 
 export class Application {
-    static async getApplications({user_type}){
+    static async getApplications({id_user}){
         try {
             let key, applications;
-            if(user_type === 'admin'){
-                key = 'getApplicationsAdmin';
-                applications = appSeguridadInfDB.exeQuery({key, params: [user_type]})
-                return {success: true, adminApplications: applications}
-            }
+
             key = 'getApplications';
-            applications = appSeguridadInfDB.exeQuery({key, params: [user_type]})
-            return {success: true, normalUserApplications: applications}
+            applications = await appSeguridadInfDB.exeQuery({key, params: [id_user]})
+            //console.log(applications)
+            return {applications}
         } catch (error) {
             throw error;
         }

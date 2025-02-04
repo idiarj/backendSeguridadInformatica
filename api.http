@@ -18,10 +18,13 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "Idiarj",
-    "password": "Foden2004"
+    "username": "prueba",
+    "password": "prueba123"
 }
 
 
 #### Enviar licitacion
 POST http://localhost:3000/send/txt
+
+### Ver licitaciones
+GET http://localhost:3000/application
