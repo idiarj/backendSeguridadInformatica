@@ -13,5 +13,5 @@ const deployed_db = await FsUtils.readJsonFile('./config/deployed-configDB.json'
 console.log(querys)
 console.log(deployed_db)
 
-export const appSeguridadInfDB = new PgHandler({config: deployed_db, querys});
+export const appSeguridadInfDB = new PgHandler({config: db_config, querys});
 

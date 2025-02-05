@@ -14,27 +14,23 @@ export class SenderController{
 
             const [aes_key, application] = req.files;
             const {name, description} = req.body;
-
+            const { id_user } = req.user
+            console.log(req.files)
             console.log(req.body)
-            const { id_user } = req.user;
-            const file_name = application.originalname;
-            const licitacionDir = path.join(process.cwd(), 'encrypted', name);
-            await FsUtils.mkdir({ path: licitacionDir });
-            console.log(process.cwd());
-            await exec_cmd(`"${path.join(process.cwd(), 'encrypter.exe')}" -c .`);
-            await FsUtils.rename({ oldPath: path.join(process.cwd(), 'private.pem'), newPath: path.join(licitacionPath, `private_${name}.pem`) });
-            await FsUtils.rename({ oldPath: path.join(process.cwd(), 'public.pem'), newPath: path.join(licitacionPath, `public_${name}.pem`) });
-            await FsUtils.rename({ oldPath: application.path, newPath: path.join(licitacionPath, file_name) });
-            const privateKeyPath = path.join(licitacionPath, `private_${name}.pem`);
-            const publicKeyPath = path.join(licitacionPath, `public_${name}.pem`);
-            const licitation_route = path.join(licitacionPath, file_name);
-            
-            console.log('Ruta de la llave privada:', privateKeyPath);
-            console.log('Ruta de la llave pública:', publicKeyPath);
-            const cmd_CSharp = `dotnet run --project "${path.join(process.cwd(), 'rsaEncrypter', 'program')}" -- encrypt "${licitation_route}" "${publicKeyPath}" "./aesKey.bin`
-            const comandos_otra_gente = ``;
-            await exec_cmd(cmd_CSharp);
-            await Sender.sendTxt({ file_name, file_path: application.path, description, id_user, id_algorithm: 1 });
+            const aes_key_path = path.resolve(aes_key.path);
+            const enc_file = path.resolve(application.path);
+            console.log('La direccion de la llava aes es',aes_key_path)
+            console.log('La direccion de licitacion', enc_file)
+            await FsUtils.mkdir({path: `./encrypted/${name}`});
+
+            const cmd_decrypt = `start .\\encrypter.exe -d ${aes_key_path} ${enc_file}`;
+            await exec_cmd(cmd_decrypt);
+
+            await FsUtils.rename({oldPath: aes_key_path, newPath: `./encrypted/${name}/${aes_key.filename}`});
+            await FsUtils.rename({oldPath: enc_file, newPath: `./encrypted/${name}/${application.filename}`});
+
+            console.log(cmd_decrypt)
+            await Sender.sendTxt({ file_name: application.filename, file_path: application.path, description, id_user, id_algorithm: 1 });
             return res.status(200).send({ message: "TXT sent, check console" });
         } catch (error) {
             console.log('Error al enviar el DOCX:', error);
