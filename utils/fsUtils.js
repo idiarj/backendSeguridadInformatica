@@ -37,4 +37,22 @@ export class FsUtils {
             console.log('Error al borrar el archivo:', error);
         }
     }
+
+    static async mkdir({path}){
+        try {
+            await fs.mkdir(path);
+        } catch (error) {
+            console.log('Error al crear el directorio:', error);
+            throw error;
+        }
+    }
+
+    static async rename({oldPath, newPath}){
+        try {
+            await fs.rename(oldPath, newPath);
+        } catch (error) {
+            console.log('Error al renombrar el archivo:', error);
+            throw error;
+        }
+    }
 }

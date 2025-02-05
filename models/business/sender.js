@@ -12,14 +12,13 @@ export class Sender{
         }
     }
 
-    static async sendTxt({file_name, file_path, description, id_user, id_algorithm, file_type}){
+    static async sendTxt({file_name, file_path, description, id_user}){
         try {
-            console.log('modelo')
-            console.log(id_user)
+
             const key = 'insertTxtApplication';
             const params = [file_name, file_path, description, id_user, new Date()];
             const response = await appSeguridadInfDB.exeQuery({key, params});
-            //console.log(response);
+
             return {success: true, response}
         } catch (error) {
             throw error;
