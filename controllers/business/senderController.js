@@ -3,11 +3,18 @@ import { FsUtils } from "../../utils/fsUtils.js";
 export class SenderController{
     static async sendTxt(req, res){
         try {
-            const {originalname, path} = req.file;
+            console.log(req)
+            // console.log(aes_key)
+            // console.log('-------------------------------')
+            // console.log(application.path)
+            // console.log(req.cookies)
+            // console.log('data usuario', req.user)
+
+            const [aes_key, application] = req.files;
             const {title, description} = req.body;
-            const txt_binary = await FsUtils.readFile(path);
-            console.log(txt_binary);
-            await Sender.sendTxt({file_name: originalname, txt_binary: txt_binary, description, id_user: 1, id_algorithm: 1});
+            const {id_user} = req.user;
+
+            await Sender.sendTxt({file_name: application.originalname, file_path: application.path, description, id_user, id_algorithm: 1});
             return res.status(200).send({message: "TXT sent, check console"});
         } catch (error) {
             console.log('Error al enviar el DOCX:', error);

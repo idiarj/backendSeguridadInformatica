@@ -3,6 +3,6 @@
     "validateUser": "SELECT id_user, username, id_user_type FROM usuario WHERE LOWER(username) = LOWER($1)",
     "validatePassword": "SELECT user_password FROM usuario WHERE username = $1",
     "registerUser": "INSERT INTO usuario (username, email, user_password, id_enterprises, id_user_type) VALUES ($1, $2, $3, 1, 2)",
-    "insertTxtApplication": "INSERT INTO application (application_name, binary_file, application_description, id_algorithm, id_state, file_type_id, id_user) VALUES ($1, $2, $3, 2, $4, $5, $6)",
+    "insertTxtApplication": "INSERT INTO application (application_name, application_route, application_description, id_algorithm, id_state, file_type_id, id_user, application_date) VALUES ($1, $2, $3, 1, 2, 1, $4, $5)",
     "updateApplication": "UPDATE application SET id_state = $1 WHERE id_application = $2"
 }

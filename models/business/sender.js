@@ -1,5 +1,6 @@
 import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
 
+
 export class Sender{
 
 
@@ -11,10 +12,12 @@ export class Sender{
         }
     }
 
-    static async sendTxt({file_name, txt_binary, description, id_user, id_algorithm, file_type}){
+    static async sendTxt({file_name, file_path, description, id_user, id_algorithm, file_type}){
         try {
-            const key = 'insertDocxApplication';
-            const params = [file_name, txt_binary, description, id_algorithm, 1, file_type, id_user];
+            console.log('modelo')
+            console.log(id_user)
+            const key = 'insertTxtApplication';
+            const params = [file_name, file_path, description, id_user, new Date()];
             const response = await appSeguridadInfDB.exeQuery({key, params});
             //console.log(response);
             return {success: true, response}
