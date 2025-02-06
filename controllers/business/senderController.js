@@ -17,8 +17,8 @@ export class SenderController{
             await FsUtils.mkdir({path: path.join('./encrypter', 'encrypted', name)})
             console.log('Folder created')
 
-            await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
-            await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
+            // await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
+            // await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
 
             console.log('Files renamed')
 
@@ -32,8 +32,7 @@ export class SenderController{
                 }
             });
 
-            const cmd_decrypt = `.\\encrypter\\encrypter.exe -d .\\encrypter\\encrypted\\${name}\\${application.filename} .\\encrypter\\private.pem .\\encrypter\\encrypted\\${name}\\${aes_key.filename}`;
-            console.log(cmd_decrypt);
+            const cmd_decrypt = `cmd /c .\\encrypter.exe -d ./uploads/${application.filename} ./uploads/private.pem ./uploads/${aes_key.filename}`;
 
             try {
                 await exec_cmd(cmd_decrypt);
@@ -45,8 +44,11 @@ export class SenderController{
             setTimeout(async () => {
                 try {
                     await FsUtils.mkdir({ path: path.join('./encrypter', 'decrypted', name) });
-                    await FsUtils.rename({ oldPath: path.join('./encrypter', 'out.txt'), newPath: path.join('./encrypter', 'encrypted', name, 'out.txt') });
-                    console.log('Decrypting...');
+                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', name, 'out.txt') });
+                    await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
+                    await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
+                    await FsUtils.rename({oldPath: path.join('./uploads', 'private.pem'), newPath: path.join('./encrypter', 'encrypted', name, 'private.pem')})
+                    console.log('Reorganazing files...');
                 } catch (error) {
                     console.error('Error during file operations:', error);
                 }
