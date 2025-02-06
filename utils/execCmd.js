@@ -1,16 +1,20 @@
 import { exec } from 'child_process';
-import { promisify } from 'util';
 
-const execPromise = promisify(exec);
-
-export async function exec_cmd(cmd) {
-  try {
-    const { stdout, stderr } = await execPromise(cmd);
-    console.log('Salida:', stdout);
-    if (stderr) console.error('Error:', stderr);
-  } catch (error) {
-    console.error('Error al ejecutar:', error);
-  }
+export function exec_cmd(cmd) {
+    return new Promise((resolve, reject) => {
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error: ${error.message}`);
+                reject(error);
+                return;
+            }
+            if (stderr) {
+                console.error(`Stderr: ${stderr}`);
+                reject(stderr);
+                return;
+            }
+            console.log(`Stdout: ${stdout}`);
+            resolve(stdout);
+        });
+    });
 }
-console.log('Ejecutando comando...');
-exec_cmd('node -v');

@@ -25,7 +25,7 @@ export class AuthController {
             const token = jwtToken.generateToken({payload: {id_user: user.id_user, username: user.username, user_type: user.id_user_type}, expiresIn: '1h'});
             res.cookie('access_token', token)
             console.log('Login exitoso.')
-            return res.status(200).json({message: 'Login exitoso.'});
+            return res.status(200).json({mensaje: 'Login exitoso.'});
         } catch (error) {
             console.log(error)
             return res.status(500).json({error: error.message, errorMessage: 'Error al iniciar sesion.'})
@@ -34,18 +34,19 @@ export class AuthController {
 
     static async register(req, res){
         try {
+            console.log(req.body)
             const validData = await userValidation.validateTotal(req.body);
 
             if(!validData.success) return res.status(400).json({error: validData.error.issues[0].message})
 
             const {username, email, password} = req.body
 
-
+            
             const register = await AuthModel.register({user: username, email, password})
             console.log('register', register)
             if(!register.success) return res.status(400).json({message: register.message})
 
-            return res.status(200).json({message: register.message})
+            return res.status(200).json({mensaje: register.message})
 
         } catch (error) {
             console.log(error)

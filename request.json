@@ -1,0 +1,65 @@
+{
+    "/auth": {
+        "/register":{
+            "method": "POST",
+            "body": {
+                "username": "String",
+                "password": "String",
+                "email": "String"
+            },
+            "devuelve": {
+                "mensaje": "String"
+            }
+        },
+        "login": {
+            "method": "POST",
+            "body": {
+                "username": "String",
+                "password": "String"
+            },
+            "devuelve": {
+                "mensaje": "String"
+            }
+        },
+        "logout": {
+            "method": "POST",
+            "devuelve": {
+                "mensaje": "String"
+            }
+        }
+    },
+    "send": {
+        "text": {
+            "method": "POST",
+            "body": {
+                "text": "String"
+            },
+            "files": {
+                "aes_key": "File",
+                "application": "File"
+            },
+            "devuelve": {
+                "mensaje": "String"
+            }
+        }
+    },
+    "application": {
+        "/": {
+            "method": "GET",
+            "devuelve": {
+                "object": {
+                    "applications": [
+                        {
+                            "id": "Number",
+                            "name": "String",
+                            "description": "String",
+                            "date": "String",
+                            "status": "String"
+                        }
+                    ]
+                }
+                
+            }
+        }
+    }
+}

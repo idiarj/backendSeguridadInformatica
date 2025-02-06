@@ -23,7 +23,7 @@ export class AuthModel {
         try {
             const userAlreadyExists = await this.validateUser({username: user, email})
             const hashedPassword = await CryptManager.encriptarData({data: password})
-            if(userAlreadyExists) return {success: false, message: 'El usuario ya existe.'}
+            if(userAlreadyExists.length > 0) return {success: false, message: 'El usuario ya existe.'}
             const key = 'registerUser'
             const params = [user, email, hashedPassword]
             await appSeguridadInfDB.exeQuery({
