@@ -7,9 +7,13 @@ export class AuthModel {
     static async login({username, email, password}){
         try {
             console.log('----LOGIN MODELO----')
+
+            console.log('username', username)
+            console.log('email', email)
+            console.log('password', password)
             const user = await this.validateUser({username, email})
             console.log('user', user)
-            const passwordValidation = await this.validatePassword({username, password})
+            const passwordValidation = await this.validatePassword({email, password})
             console.log('passwordValidation', passwordValidation)
             if((user.length > 0) && passwordValidation) return {success: true, user }
             return false
@@ -47,7 +51,7 @@ export class AuthModel {
     static async validateUser({username, email}){
         try {
             const key = 'validateUser'
-            const params = [username]
+            const params = [email]
             const user = await appSeguridadInfDB.exeQuery({
                 key,
                 params
@@ -60,10 +64,10 @@ export class AuthModel {
         }
     }
 
-    static async validatePassword({username, password}){
+    static async validatePassword({email, password}){
         try {
             const key = 'validatePassword'
-            const params = [username]
+            const params = [email]
             const [{user_password}] = await appSeguridadInfDB.exeQuery({
                 key,
                 params

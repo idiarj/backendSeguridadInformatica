@@ -29,6 +29,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(cors_config));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true')
+  next(); 
+})
+
 app.use('/auth', authRouter);
 app.use('/send', upload.array('file'), senderRouter);
 app.use('/application', applicationRouter);

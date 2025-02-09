@@ -1,31 +1,32 @@
 import { AuthModel } from "../../models/auth/authModel.js"
 import { userValidation } from "../../instances/security/validationInstances.js"
 import { jwtToken } from "../../utils/jwtManger.js"
+import path from 'path'
 export class AuthController {
     static async login(req, res){
         try {
             console.log('----LOGIN CONTROLADOR----')
-            const {username, password} = req.body
+            const {email, password} = req.body
             console.log('req.body', req.body)
-            if(req.cookies.access_token) {
+            if(req.cookies.session_token) {
                 console.log('Ya hay una sesion activa.')
-                res.clearCookie('access_token')
+                res.clearCookie('session_token')
                 return res.status(400).json({message: 'Ya hay una sesion activa.'})
             }
             const validData = await userValidation.validatePartial(req.body)
             if(!validData.success) return res.status(400).json({error: validData.error.issues[0].message})
             
-            const validLogin = await AuthModel.login({username, password})
+            const validLogin = await AuthModel.login({email, password})
             if(!(validLogin.success)) return res.status(400).json({
                 mensaje: 'No se pudo iniciar sesion, usuario o contraseña incorrectas.'
             })
             console.log('sali del modelo')
             const [user] = validLogin.user
             console.log(user)
-            const token = jwtToken.generateToken({payload: {id_user: user.id_user, username: user.username, user_type: user.id_user_type}, expiresIn: '1h'});
-            res.cookie('access_token', token)
+            const token = jwtToken.generateToken({payload: {id_user: user.id_user, email: user.email, user_type: user.id_user_type}, expiresIn: '1h'});
+            res.cookie('session_token', token)
             console.log('Login exitoso.')
-            return res.status(200).json({mensaje: 'Login exitoso.'});
+            return res.status(200).json({mensaje: 'Login exitoso.', token});
         } catch (error) {
             console.log(error)
             return res.status(500).json({error: error.message, errorMessage: 'Error al iniciar sesion.'})
@@ -57,12 +58,15 @@ export class AuthController {
     static async logout(req, res){
         try {
             console.log(req.cookies)
-            const token = req.cookies.access_token
+            const token = req.cookies.session_token
             if(!token) return res.status(400).json({message: 'No hay token de acceso.'})
-            res.clearCookie('access_token')
+            res.clearCookie('session_token')
+            console.log('Sesión cerrada.')
             return res.status(200).json({message: 'Sesión cerrada.'})
         } catch (error) {
             return res.status(500).json({error: error.message, errorMessage: 'Error al cerrar sesión.'})
         }
     }
+
+
 }

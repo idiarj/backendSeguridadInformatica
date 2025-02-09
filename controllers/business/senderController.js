@@ -11,7 +11,7 @@ export class SenderController{
 
             const [aes_key, application] = req.files;
             const {name, description} = req.body;
-            const { id_user } = req.user
+            //const { id_user } = req.user
 
             
             await FsUtils.mkdir({path: path.join('./encrypter', 'encrypted', name)})
@@ -44,7 +44,7 @@ export class SenderController{
             setTimeout(async () => {
                 try {
                     await FsUtils.mkdir({ path: path.join('./encrypter', 'decrypted', name) });
-                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', name, 'out.txt') });
+                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', name, `${application.filename}`) });
                     await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
                     await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
                     await FsUtils.rename({oldPath: path.join('./uploads', 'private.pem'), newPath: path.join('./encrypter', 'encrypted', name, 'private.pem')})
