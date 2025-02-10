@@ -4,4 +4,4 @@ import { authMiddleware } from "../middlewares/auth/authMiddleware.js";
 
 export const senderRouter = Router();
 
-senderRouter.post('/txt', authMiddleware, SenderController.sendTxt);
+senderRouter.post('/txt/:id_user', SenderController.sendTxt);

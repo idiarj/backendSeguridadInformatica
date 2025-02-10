@@ -14,7 +14,7 @@ export class SenderController{
 
             const [application, aes_key] = req.files;
             const {title, description} = req.body;
-            const { id_user } = req.user
+            const { id_user } = req.params
 
             console.log(title, description);
 
