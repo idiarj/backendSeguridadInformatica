@@ -8,3 +8,4 @@ applicationRouter.get('/admin', authMiddleware, applicationController.getApplica
 applicationRouter.get('/user/:id', authMiddleware, applicationController.getApplicationsUser);
 applicationRouter.get('/getKey', applicationController.downloadKey);
 applicationRouter.get('/download/:id', applicationController.downloadApplication);
+applicationRouter.put('/update/:id', authMiddleware, applicationController.updateApplicationStatus);

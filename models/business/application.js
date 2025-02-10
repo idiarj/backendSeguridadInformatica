@@ -17,9 +17,11 @@ export class Application {
 
     static async updateApplication({application_id, status}){
         try {
+            console.log('a',application_id)
+            console.log('b',status)
             const key = 'updateApplication';
             const result = appSeguridadInfDB.exeQuery({key, params: [status, application_id]})
-            return {success: true, result}
+            return result
         } catch (error) {
             throw error;
         }

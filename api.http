@@ -54,3 +54,11 @@ GET http://localhost:3000/application/user/
 
 ### Descargar licitaciones
 GET http://localhost:3000/application/download/28
+
+### Actualizar estado de la aplicación
+PUT http://localhost:3000/application/update/28
+Content-Type: application/json
+
+{
+    "id_state": 3
+}

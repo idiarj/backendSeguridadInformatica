@@ -35,16 +35,6 @@ export class applicationController{
         }
     }
 
-    static async updateApplication(req, res){
-        try {
-            const {application_id, id_state} =  req.body
-            const application = await Application.updateApplication({application_id, id_state})
-            return res.status(200).json({success: true, application})
-        } catch (error) {
-            res.status(401).json({error: error, errorMessage: 'Error al actualizar la licitación.'})
-        }
-    }
-
     static async downloadKey(req, res){
         try {
             console.log('joli')
@@ -68,6 +58,20 @@ export class applicationController{
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message, errorMessage: 'Error al descargar aplicación.' });
+        }
+    }
+
+    static async updateApplicationStatus(req, res){
+        try {
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaa')
+            const {id} = req.params
+            const {id_state} = req.body
+            console.log('g',req)
+            const application = await Application.updateApplication({application_id: id, status: id_state})
+            return res.status(200).json({success: true, application, message: `Licitacion ${id} actualizada.`})
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({error: error.message, errorMessage: 'Error al actualizar la licitación.'})
         }
     }
 }
