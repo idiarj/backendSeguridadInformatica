@@ -7,6 +7,8 @@ export class applicationController{
             console.log('joli')
             //console.log(req.user)
             const {id_user, user_type} = req.params;
+            console.log('id_user',id_user)
+            console.log('user_type',user_type)
             if(user_type !== 1) return res.status(401).json({error: 'No autorizado', errorMessage: 'No tienes permisos para realizar esta acción.'})
             console.log('ab', req.user)
             const {applications} = await Application.getApplicationsAdmin({id_user})
