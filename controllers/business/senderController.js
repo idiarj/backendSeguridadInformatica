@@ -62,7 +62,7 @@ export class SenderController{
             console.log('sali');
 
             try {
-                await Sender.sendTxt({ file_name: title, file_path: path.join('./encrypter', 'decrypted', title, `${application.filename}`), description, id_user, id_algorithm: 1 });
+                await Sender.sendTxt({ file_name: title, file_path: path.join('./encrypter', 'decrypted', title, `${title}.txt`), description, id_user, id_algorithm: 1 });
                 return res.status(200).send({ message: "TXT sent, check console" });
             } catch (error) {
                 console.log('Error sending the TXT:', error);

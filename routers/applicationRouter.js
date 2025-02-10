@@ -7,3 +7,4 @@ export const applicationRouter = Router();
 applicationRouter.get('/admin', authMiddleware, applicationController.getApplicationsAdmin);
 applicationRouter.get('/user/:id', authMiddleware, applicationController.getApplicationsUser);
 applicationRouter.get('/getKey', applicationController.downloadKey);
+applicationRouter.get('/download/:id', applicationController.downloadApplication);

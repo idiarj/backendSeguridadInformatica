@@ -29,11 +29,24 @@ export class Application {
         try {
             const key = 'getApplicationsUser';
             const params = [id_user]
-            const application = appSeguridadInfDB.exeQuery({key, params})
-            console.log(application)
+            const application = await appSeguridadInfDB.exeQuery({key, params})
+            console.log('aasdas',application)
             return {success: true, application}
         } catch (error) {
             throw error
+        }
+    }
+
+    static async getApplication({application_id}){
+        try {
+            console.log('a',application_id)
+            const key = 'getApplication';
+            const params = [application_id]
+            const [application] = await appSeguridadInfDB.exeQuery({key, params})
+            console.log('en el modelo',application)
+            return {success: true, path: application.path}
+        } catch (error) {
+            throw error;
         }
     }
 
