@@ -6,7 +6,7 @@ export class applicationController{
         try {
             console.log('joli')
             //console.log(req.user)
-            const {id_user, user_type} = req.user
+            const {id_user, user_type} = req.params;
             if(user_type !== 1) return res.status(401).json({error: 'No autorizado', errorMessage: 'No tienes permisos para realizar esta acción.'})
             console.log('ab', req.user)
             const {applications} = await Application.getApplicationsAdmin({id_user})
@@ -21,10 +21,10 @@ export class applicationController{
     static async getApplicationsUser(req, res){
         try {
 
-            const {id} = req.params
-            const {id_user, user_type} = req.user
-            console.log(id)
-            console.log(id_user)
+            const {id, id_user} = req.params
+
+            // console.log(id)
+            // console.log(id_user)
             if(id_user != id) return res.status(401).json({error: 'No autorizado', errorMessage: 'No puedes ver las licitaciones de otros usuarios.'})
             const {application} = await Application.getApplicationsUser({id_user: id})
             console.log(application)
