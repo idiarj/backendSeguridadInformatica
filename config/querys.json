@@ -1,5 +1,6 @@
 {
-    "getApplications": "SELECT id_application AS id, application_name AS name, application_description AS description, application_date AS date, state_name AS status FROM application n INNER JOIN state s ON n.id_state = s.id_state WHERE n.id_user = $1 ",
+    "getApplicationsUser": "SELECT id_application AS id, application_name AS name, application_description AS description, application_date AS date, state_name AS status FROM application n INNER JOIN state s ON n.id_state = s.id_state WHERE n.id_user = $1 ",
+    "getApplicationsAdmin": "SELECT id_application AS id, application_name AS name, application_description AS description, application_date AS date, state_name AS status FROM application n INNER JOIN state s ON n.id_state = s.id_state",
     "validateUser": "SELECT id_user, email, id_user_type FROM usuario WHERE LOWER(email) = LOWER($1)",
     "validatePassword": "SELECT user_password FROM usuario WHERE email = $1",
     "registerUser": "INSERT INTO usuario (username, email, user_password, id_enterprises, id_user_type) VALUES ($1, $2, $3, 1, 2)",

@@ -2,13 +2,13 @@ import { Application } from "../../models/business/application.js";
 import path from 'path';
 export class applicationController{
 
-    static async ApplicationsGET(req, res){
+    static async getApplicationsAdmin(req, res){
         try {
             console.log('joli')
             //console.log(req.user)
             const {id_user} = req.user
             console.log('ab', req.user)
-            const {applications} = await Application.getApplications({id_user})
+            const {applications} = await Application.getApplicationsAdmin({id_user})
             // console.log('as',applications)
             return res.status(200).json({success: true, applications})
         } catch (error) {
@@ -17,13 +17,14 @@ export class applicationController{
         }
     }
 
-    static async getApplication(req, res){
+    static async getApplicationsUser(req, res){
         try {
-            const {application_id} = req.body
-            const application = await Application.getApplication({application_id})
-            return res.status(200).json({success: true, application})
+
+            const {id} = req.params
+            const {applications} = await Application.getApplications({id_user: id})
+            return res.status(200).json({success: true, applications})
         } catch (error) {
-            res.status(401).json({error: error, errorMessage: 'Error al obtener la licitación.'})
+            res.status(401).json({error: error, errorMessage: 'Error al obtener las licitaciones.'})
         }
     }
 

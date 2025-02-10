@@ -33,4 +33,4 @@ Content-Type: application/json
 }
 
 ### Ver licitaciones
-GET http://localhost:3000/application
+GET http://localhost:3000/application/admin

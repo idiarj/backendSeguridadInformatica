@@ -2,12 +2,12 @@ import { appSeguridadInfDB } from "../../instances/database/iPgManager.js";
 
 
 export class Application {
-    static async getApplications({id_user}){
+    static async getApplicationsAdmin(){
         try {
             let key, applications;
 
-            key = 'getApplications';
-            applications = await appSeguridadInfDB.exeQuery({key, params: [id_user]})
+            key = 'getApplicationsAdmin';
+            applications = await appSeguridadInfDB.exeQuery({key})
             //console.log(applications)
             return {applications}
         } catch (error) {
@@ -25,11 +25,12 @@ export class Application {
         }
     }
 
-    static async getApplication({application_id}){
+    static async getApplicationsUser({id_user}){
         try {
-            const key = 'getApplication';
-            const params = [application_id]
+            const key = 'getApplicationsUser';
+            const params = [id_user]
             const application = appSeguridadInfDB.exeQuery({key, params})
+            console.log(application)
             return {success: true, application}
         } catch (error) {
             throw error

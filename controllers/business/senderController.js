@@ -35,6 +35,7 @@ export class SenderController{
                 }
             });
 
+
             const cmd_decrypt = `cmd /c .\\encrypter.exe -d ./uploads/${application.filename} ./keys/private.pem ./uploads/${aes_key.filename}`;
           
             try {
@@ -44,15 +45,14 @@ export class SenderController{
                 return res.status(500).send({ message: 'Error executing decryption command' });
             }
 
+            await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', title, application.filename )})
+            await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', title, aes_key.filename )})
             setTimeout(async () => {
                 try {
-                    await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', title, application.filename )})
-                    await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', title, aes_key.filename )})
+
                     await FsUtils.mkdir({ path: path.join('./encrypter', 'decrypted', title) });
-                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', title, `${application.filename}`) });
-                    await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', title, application.filename )})
-                    await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', title, aes_key.filename )})
-                    await FsUtils.rename({oldPath: path.join('./uploads', 'private.pem'), newPath: path.join('./encrypter', 'encrypted', title, 'private.pem')})
+                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', title, `${title}.txt`) });
+
                     console.log('Reorganazing files...');
                 } catch (error) {
                     console.error('Error during file operations:', error);
