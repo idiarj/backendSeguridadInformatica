@@ -1,5 +1,5 @@
 import { Application } from "../../models/business/application.js";
-
+import path from 'path';
 export class applicationController{
 
     static async ApplicationsGET(req, res){
@@ -40,10 +40,11 @@ export class applicationController{
     static async downloadKey(req, res){
         try {
             console.log('joli')
-            const keyPath = path.join(__dirname, '../../../keys/public.key')
+            const keyPath = path.join('./keys', 'public.pem')
             console.log(keyPath)
             res.download(keyPath)
         } catch (error) {
+            console.log(error)
             return res.status(500).json({error: error.message, errorMessage: 'Error al descargar llave.'})
         }
     }

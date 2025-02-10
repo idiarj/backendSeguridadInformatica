@@ -18,13 +18,19 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "prueba",
-    "password": "prueba123"
+    "email": "idiar16@gmail.com",
+    "password": "16012004"
 }
 
 
 #### Enviar licitacion
 POST http://localhost:3000/send/txt
+Content-Type: application/json
+
+{
+    "title": "Licitacion de prueba",
+    "description": "Esta es una licitacion de prueba"
+}
 
 ### Ver licitaciones
 GET http://localhost:3000/application
