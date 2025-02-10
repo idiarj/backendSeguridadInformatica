@@ -9,10 +9,10 @@ export class applicationController{
             const {id_user, user_type} = req.params;
             console.log('id_user',id_user)
             console.log('user_type',user_type)
-            if(user_type !== 1) return res.status(401).json({error: 'No autorizado', errorMessage: 'No tienes permisos para realizar esta acción.'})
+            if(user_type != 1) return res.status(401).json({error: 'No autorizado', errorMessage: 'No tienes permisos para realizar esta acción.'})
             console.log('ab', req.user)
             const {applications} = await Application.getApplicationsAdmin({id_user})
-            // console.log('as',applications)
+            console.log('as',applications)
             return res.status(200).json({success: true, applications})
         } catch (error) {
             console.log(error)
@@ -27,7 +27,7 @@ export class applicationController{
 
             // console.log(id)
             // console.log(id_user)
-            if(id_user != id) return res.status(401).json({error: 'No autorizado', errorMessage: 'No puedes ver las licitaciones de otros usuarios.'})
+            //if(id_user != id) return res.status(401).json({error: 'No autorizado', errorMessage: 'No puedes ver las licitaciones de otros usuarios.'})
             const {application} = await Application.getApplicationsUser({id_user: id})
             console.log(application)
             return res.status(200).json({success: true, application})
