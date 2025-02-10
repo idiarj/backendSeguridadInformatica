@@ -8,56 +8,61 @@ export class SenderController{
     static async sendTxt(req, res){
         try {
 
+            console.log(req.body);
+            console.log(req.files);
+            console.log(req.user);
 
-            const [aes_key, application] = req.files;
-            const {name, description} = req.body;
-            //const { id_user } = req.user
+            const [application, aes_key] = req.files;
+            const {title, description} = req.body;
+            const { id_user } = req.user
 
-            
-            await FsUtils.mkdir({path: path.join('./encrypter', 'encrypted', name)})
+            console.log(title, description);
+
+            await FsUtils.mkdir({path: path.join('./encrypter', 'encrypted', title)})
             console.log('Folder created')
 
-            // await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
-            // await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
+           
 
-            // console.log('Files renamed')
+            console.log('Files renamed')
 
-            // const directoryPath = path.join('./encrypter');
+            const directoryPath = path.join('./encrypter');
 
-            // fs.access(directoryPath, fs.constants.W_OK, (err) => {
-            //     if (err) {
-            //         console.error(`No write access to directory: ${directoryPath}`);
-            //     } else {
-            //         console.log(`Write access to directory: ${directoryPath}`);
-            //     }
-            // });
+            fs.access(directoryPath, fs.constants.W_OK, (err) => {
+                if (err) {
+                    console.error(`No write access to directory: ${directoryPath}`);
+                } else {
+                    console.log(`Write access to directory: ${directoryPath}`);
+                }
+            });
 
-            // const cmd_decrypt = `cmd /c .\\encrypter.exe -d ./uploads/${application.filename} ./uploads/private.pem ./uploads/${aes_key.filename}`;
+            const cmd_decrypt = `cmd /c .\\encrypter.exe -d ./uploads/${application.filename} ./keys/private.pem ./uploads/${aes_key.filename}`;
+          
+            try {
+                await exec_cmd(cmd_decrypt);
+            } catch (error) {
+                console.error('Error executing decryption command:', error);
+                return res.status(500).send({ message: 'Error executing decryption command' });
+            }
 
-            // try {
-            //     await exec_cmd(cmd_decrypt);
-            // } catch (error) {
-            //     console.error('Error executing decryption command:', error);
-            //     return res.status(500).send({ message: 'Error executing decryption command' });
-            // }
+            setTimeout(async () => {
+                try {
+                    await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', title, application.filename )})
+                    await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', title, aes_key.filename )})
+                    await FsUtils.mkdir({ path: path.join('./encrypter', 'decrypted', title) });
+                    await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', title, `${application.filename}`) });
+                    await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', title, application.filename )})
+                    await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', title, aes_key.filename )})
+                    await FsUtils.rename({oldPath: path.join('./uploads', 'private.pem'), newPath: path.join('./encrypter', 'encrypted', title, 'private.pem')})
+                    console.log('Reorganazing files...');
+                } catch (error) {
+                    console.error('Error during file operations:', error);
+                }
+            }, 3000);
 
-            // setTimeout(async () => {
-            //     try {
-            //         await FsUtils.mkdir({ path: path.join('./encrypter', 'decrypted', name) });
-            //         await FsUtils.rename({ oldPath: path.join('out.txt'), newPath: path.join('./encrypter', 'decrypted', name, `${application.filename}`) });
-            //         await FsUtils.rename({oldPath: application.path, newPath: path.join('./encrypter', 'encrypted', name, application.filename )})
-            //         await FsUtils.rename({oldPath: aes_key.path, newPath: path.join('./encrypter', 'encrypted', name, aes_key.filename )})
-            //         await FsUtils.rename({oldPath: path.join('./uploads', 'private.pem'), newPath: path.join('./encrypter', 'encrypted', name, 'private.pem')})
-            //         console.log('Reorganazing files...');
-            //     } catch (error) {
-            //         console.error('Error during file operations:', error);
-            //     }
-            // }, 3000);
-
-            // console.log('sali');
+            console.log('sali');
 
             try {
-                await Sender.sendTxt({ file_name: name, file_path: path.join('./encrypter', 'decrypted', name, `${application.filename}`), description, id_user, id_algorithm: 1 });
+                await Sender.sendTxt({ file_name: title, file_path: path.join('./encrypter', 'decrypted', title, `${application.filename}`), description, id_user, id_algorithm: 1 });
                 return res.status(200).send({ message: "TXT sent, check console" });
             } catch (error) {
                 console.log('Error sending the TXT:', error);
