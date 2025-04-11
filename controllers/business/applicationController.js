@@ -10,7 +10,7 @@ export class applicationController{
             console.log('id_user',id_user)
             console.log('user_type',user_type)
             if(user_type != 1) return res.status(401).json({error: 'No autorizado', errorMessage: 'No tienes permisos para realizar esta acción.'})
-            console.log('ab', req.user)
+            // console.log('ab', req.user)
             const {applications} = await Application.getApplicationsAdmin({id_user})
             console.log('as',applications)
             return res.status(200).json({success: true, applications})
